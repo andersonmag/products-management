@@ -29,4 +29,13 @@ public class ProductController {
         return ResponseEntity.created(location).body(productSaved);
     }
 
+    @GetMapping
+    public ResponseEntity<List<Product>> getAllProducts(@RequestParam(value = "title", required = false) String titleSearch) {
+        return ResponseEntity.ok(productService.getAllProducts(titleSearch));
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Product> getProduct(@PathVariable("id") Long idProduto) {
+        return ResponseEntity.ok(productService.getProductById(idProduto));
+    }
 }

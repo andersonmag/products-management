@@ -19,4 +19,16 @@ public class ProductService {
         Product productSaved = productRepository.save(productRequest.toModel());
         return productSaved;
     }
+
+    public List<Product> getAllProducts(String titleSearch) {
+        if(titleSearch != null) {
+            return productRepository.findAllByTitleContaining(titleSearch);
+        }
+        return productRepository.findAll();
+    }
+
+    public Product getProductById(Long idProduto) {
+        return productRepository.findById(idProduto).orElseThrow(()
+                -> new IllegalArgumentException("Id de produto não encontrado"));
+    }
 }
