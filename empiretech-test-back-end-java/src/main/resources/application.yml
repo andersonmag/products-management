@@ -1,0 +1,19 @@
+spring:
+  jackson:
+    serialization:
+      indent-output: true
+  datasource:
+    url: jdbc:postgresql://localhost:5432/tenancy1
+    username: postgres
+    password: admin
+  jpa:
+    driver-class-name: org.postgresql.Driver
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+
+server:
+  servlet:
+    context-path: /api
