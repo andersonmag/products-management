@@ -3,6 +3,7 @@ package com.example.empiretechtestbackendjava.controller;
 import com.example.empiretechtestbackendjava.domain.Product;
 import com.example.empiretechtestbackendjava.dto.ProductRequest;
 import com.example.empiretechtestbackendjava.service.ProductService;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,7 +20,7 @@ public class ProductController {
     private ProductService productService;
 
     @PostMapping
-    public ResponseEntity<Product> createProduct(@RequestPart ProductRequest product,
+    public ResponseEntity<Product> createProduct(@RequestPart @Valid ProductRequest product,
                                                  @RequestPart(required = false) List<MultipartFile> images) {
         var productSaved = productService.createProduct(product, images);
         var location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
