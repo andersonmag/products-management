@@ -24,7 +24,7 @@ public class Product {
     @Column(nullable = true)
     private BigDecimal price;
 
-    @OneToMany(mappedBy = "product", orphanRemoval = true, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
     List<ImageProduct> images;
 
     public Product(String title, String description, BigDecimal price) {

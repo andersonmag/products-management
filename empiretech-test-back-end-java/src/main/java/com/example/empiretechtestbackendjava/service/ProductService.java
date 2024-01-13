@@ -3,6 +3,7 @@ package com.example.empiretechtestbackendjava.service;
 import com.example.empiretechtestbackendjava.domain.Product;
 import com.example.empiretechtestbackendjava.dto.ProductRequest;
 import com.example.empiretechtestbackendjava.repository.ProductRepository;
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -35,5 +36,13 @@ public class ProductService {
     public void removeProductById(Long idProduto) {
         Product product = getProductById(idProduto);
         productRepository.delete(product);
+    }
+
+    @Transactional
+    public Product updateProduct(Long idProduto, ProductRequest product) {
+        Product productForUpdate = getProductById(idProduto);
+        productForUpdate = new Product(productForUpdate.getId(), product.title(), product.description(), product.price(), null);
+
+        return productRepository.save(productForUpdate);
     }
 }

@@ -1,6 +1,7 @@
 package com.example.empiretechtestbackendjava.controller;
 
 import com.example.empiretechtestbackendjava.domain.Product;
+import com.example.empiretechtestbackendjava.dto.ProductRequest;
 import com.example.empiretechtestbackendjava.service.ProductService;
 import com.example.empiretechtestbackendjava.util.ProductFactoryTest;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -109,6 +110,24 @@ public class ProductControllerTest {
 
         MockHttpServletRequestBuilder request = MockMvcRequestBuilders.delete(REQUEST_URL + "/{id}", id);
         mvc.perform(request).andExpect(status().isOk());
+    }
+
+    @Test
+    public void shoudUpdateProductById() throws Exception {
+        Long id = 1L;
+        var productForUpdate = ProductFactoryTest.getModel();
+        var productRequest = new ProductRequest( "Xbox 360", "Xbox 360 the console of Z generation", BigDecimal.valueOf(1000));
+        var product = new Product(1L, "Xbox 360", "Xbox 360 the console of Z generation", BigDecimal.valueOf(1000), null);
+        String json = mappper.writeValueAsString(productRequest);
+
+        BDDMockito.given(productService.getProductById(id)).willReturn(productForUpdate);
+        BDDMockito.given(productService.updateProduct(id, productRequest)).willReturn(product);
+
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders.put(REQUEST_URL + "/{id}", id)
+                .content(json).contentType(MediaType.APPLICATION_JSON_VALUE);
+        mvc.perform(request).andExpect(status().isOk())
+                .andExpect(jsonPath("id").value(id))
+                .andExpect(jsonPath("title").value(product.getTitle()));
     }
 
 }

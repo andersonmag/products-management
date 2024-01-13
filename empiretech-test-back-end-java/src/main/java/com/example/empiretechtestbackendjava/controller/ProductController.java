@@ -44,4 +44,11 @@ public class ProductController {
         productService.removeProductById(idProduto);
         return ResponseEntity.ok().build();
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Product> updateProduct(@PathVariable("id") Long idProduto,
+                                        @RequestBody @Valid ProductRequest product) {
+        var productUpdated = productService.updateProduct(idProduto, product);
+        return ResponseEntity.ok(productUpdated);
+    }
 }
