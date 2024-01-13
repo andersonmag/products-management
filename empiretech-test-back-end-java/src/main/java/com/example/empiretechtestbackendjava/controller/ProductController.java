@@ -20,7 +20,7 @@ public class ProductController {
     private ProductService productService;
 
     @PostMapping
-    public ResponseEntity<Product> createProduct(@RequestPart @Valid ProductRequest product,
+    public ResponseEntity<Product> createProduct(@RequestPart("product") @Valid ProductRequest product,
                                                  @RequestPart(required = false) List<MultipartFile> images) {
         var productSaved = productService.createProduct(product, images);
         var location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
