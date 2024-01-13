@@ -61,10 +61,10 @@ public class ProductControllerTest {
 
     @Test
     public void shoudGetOneProductById() throws Exception {
-        var productSaved = ProductFactoryTest.getModel();
+        var product = ProductFactoryTest.getModel();
         Long id = 1L;
 
-        BDDMockito.given(productService.getProductById(id)).willReturn(productSaved);
+        BDDMockito.given(productService.getProductById(id)).willReturn(product);
 
         MockHttpServletRequestBuilder request = MockMvcRequestBuilders.get(REQUEST_URL + "/{id}", id);
         mvc.perform(request).andExpect(status().isOk())
@@ -98,7 +98,17 @@ public class ProductControllerTest {
                 .param("title", titleForSearch);
         mvc.perform(request).andExpect(status().isOk())
                 .andExpect(jsonPath("$", Matchers.hasSize(1)));
+    }
 
+    @Test
+    public void shoudRemoveProductById() throws Exception {
+        Long id = 1L;
+        var product = ProductFactoryTest.getModel();
+
+        BDDMockito.given(productService.getProductById(id)).willReturn(product);
+
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders.delete(REQUEST_URL + "/{id}", id);
+        mvc.perform(request).andExpect(status().isOk());
     }
 
 }

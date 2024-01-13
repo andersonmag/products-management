@@ -12,6 +12,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Optional;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
@@ -70,5 +71,16 @@ public class ProductServiceTest {
         Mockito.when(productRepository.findById(id)).thenReturn(Optional.empty());
 
         assertThrows(IllegalArgumentException.class, () -> productService.getProductById(id));
+    }
+
+    @Test
+    public void shouldRemoveProductById() {
+        Long id = 1L;
+        var product = ProductFactoryTest.getModel();
+
+        Mockito.when(productRepository.findById(id)).thenReturn(Optional.of(product));
+
+        assertDoesNotThrow(() -> productService.removeProductById(id));
+        verify(productRepository, times(1)).delete(product);
     }
 }

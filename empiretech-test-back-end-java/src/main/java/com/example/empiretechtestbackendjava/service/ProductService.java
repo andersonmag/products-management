@@ -31,4 +31,9 @@ public class ProductService {
         return productRepository.findById(idProduto).orElseThrow(()
                 -> new IllegalArgumentException("Id de produto não encontrado"));
     }
+
+    public void removeProductById(Long idProduto) {
+        Product product = getProductById(idProduto);
+        productRepository.delete(product);
+    }
 }
