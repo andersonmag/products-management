@@ -89,8 +89,6 @@ public class ProductControllerTest {
     public void shoudGetProducstByTitle() throws Exception {
         var productSearch = new Product(1L, "Xbox 360", "Xbox 360 the console of Z generation", BigDecimal.valueOf(1000), null);
         List<Product> products = Arrays.asList(productSearch);
-        String json = mappper.writeValueAsString(products);
-
         String titleForSearch = "xbox";
 
         BDDMockito.given(productService.getAllProducts(titleForSearch)).willReturn(products);

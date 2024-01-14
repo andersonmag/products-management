@@ -3,21 +3,26 @@ package com.example.empiretechtestbackendjava.controller;
 import com.example.empiretechtestbackendjava.domain.Product;
 import com.example.empiretechtestbackendjava.dto.ProductRequest;
 import com.example.empiretechtestbackendjava.service.ProductService;
+import com.example.empiretechtestbackendjava.service.SseService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.util.List;
 
+@CrossOrigin("*")
 @RestController
 @AllArgsConstructor
 @RequestMapping("/products")
 public class ProductController {
 
-    private ProductService productService;
+    private final ProductService productService;
+    private final SseService sseService;
 
     @PostMapping
     public ResponseEntity<Product> createProduct(@RequestPart("product") @Valid ProductRequest product,
@@ -26,7 +31,15 @@ public class ProductController {
         var location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
                 .buildAndExpand(productSaved.getId()).toUri();
 
+        sseService.sendEvent("Product created!");
         return ResponseEntity.created(location).body(productSaved);
+    }
+
+    @GetMapping(path = "/sse", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+    public SseEmitter subscribeReceiveUpdatesProducts() {
+        SseEmitter listener = new SseEmitter(Long.MAX_VALUE);
+        sseService.addListener(listener);
+        return listener;
     }
 
     @GetMapping
@@ -42,6 +55,8 @@ public class ProductController {
     @DeleteMapping("/{id}")
     public ResponseEntity removeProduct(@PathVariable("id") Long idProduto) {
         productService.removeProductById(idProduto);
+
+        sseService.sendEvent("Product removed!");
         return ResponseEntity.ok().build();
     }
 
@@ -49,6 +64,8 @@ public class ProductController {
     public ResponseEntity<Product> updateProduct(@PathVariable("id") Long idProduto,
                                         @RequestBody @Valid ProductRequest product) {
         var productUpdated = productService.updateProduct(idProduto, product);
+
+        sseService.sendEvent("Product updated!");
         return ResponseEntity.ok(productUpdated);
     }
 }
