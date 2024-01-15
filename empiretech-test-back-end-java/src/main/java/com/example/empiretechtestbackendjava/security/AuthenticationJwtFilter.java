@@ -1,5 +1,6 @@
 package com.example.empiretechtestbackendjava.security;
 
+import com.example.empiretechtestbackendjava.config.DataSourceTenantConfig;
 import com.example.empiretechtestbackendjava.service.JwtService;
 import io.jsonwebtoken.JwtException;
 import jakarta.servlet.FilterChain;
@@ -14,11 +15,12 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 
-@AllArgsConstructor
 @Component
+@AllArgsConstructor
 public class AuthenticationJwtFilter extends OncePerRequestFilter {
 
     private final JwtService jwtService;
+    private final DataSourceTenantConfig dataSourceTenantConfig;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
@@ -31,8 +33,22 @@ public class AuthenticationJwtFilter extends OncePerRequestFilter {
             } catch (JwtException exception) {
                 response.setStatus(HttpStatus.UNAUTHORIZED.value());
             }
+        } else {
+            var tenantIdHeader = "X-TenantyID";
+            var tenant = request.getHeader(tenantIdHeader);
+
+            if(tenant == null) {
+                response.setStatus(HttpStatus.BAD_REQUEST.value());
+                return;
+            }
+            dataSourceTenantConfig.setCurrentTenant(tenant);
+            dataSourceTenantConfig.defineDataSourceByTenantUser();
         }
 
         filterChain.doFilter(request, response);
+    }
+
+    @Override
+    public void destroy() {
     }
 }

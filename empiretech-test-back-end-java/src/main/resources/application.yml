@@ -22,6 +22,19 @@ jwt:
   token-header: Authorization
   expiration-time: 3600000
 
+tenants:
+  datasources:
+    tenant1:
+      url: jdbc:postgresql://localhost:5432/tenant1
+      username: postgres
+      password: admin
+      driverClassName: ${spring.jpa.driver-class-name}
+    tenant2:
+      url: jdbc:postgresql://localhost:5433/tenant2
+      username: postgres
+      password: hash
+      driverClassName: ${spring.jpa.driver-class-name}
+
 server:
   servlet:
     context-path: /api
