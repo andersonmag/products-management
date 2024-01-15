@@ -16,6 +16,12 @@ spring:
   cache:
     type: redis
 
+jwt:
+  secret-key: 3aa15421-55d3-48f2-8372-ddca66362e98
+  token-prefix: Bearer
+  token-header: Authorization
+  expiration-time: 3600000
+
 server:
   servlet:
     context-path: /api
