@@ -1,20 +1,19 @@
 package com.example.empiretechtestbackendjava.config;
 
 import lombok.AllArgsConstructor;
-import org.springframework.cache.annotation.CachingConfigurer;
-import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.cache.interceptor.KeyGenerator;
 import org.springframework.context.annotation.Configuration;
 
+import java.lang.reflect.Method;
+
 @AllArgsConstructor
-@EnableCaching
 @Configuration
-public class CustomCacheConfig implements CachingConfigurer {
+public class CustomKeyCacheConfig implements KeyGenerator {
 
     private final DataSourceTenantConfig dataSourceTenantConfig;
 
     @Override
-    public KeyGenerator keyGenerator() {
-        return (target, method, params) -> dataSourceTenantConfig.getCurrentTenant();
+    public Object generate(Object target, Method method, Object... params) {
+        return dataSourceTenantConfig.getCurrentTenant();
     }
 }
