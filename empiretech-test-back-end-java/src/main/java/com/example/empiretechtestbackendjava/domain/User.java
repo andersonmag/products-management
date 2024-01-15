@@ -1,7 +1,6 @@
 package com.example.empiretechtestbackendjava.domain;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -20,4 +19,7 @@ public class User {
     private String username;
     @Column(nullable = false)
     private String password;
+
+    @OneToOne
+    private Tenant tenant;
 }
