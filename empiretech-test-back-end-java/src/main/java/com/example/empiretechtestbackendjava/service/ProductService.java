@@ -3,10 +3,10 @@ package com.example.empiretechtestbackendjava.service;
 import com.example.empiretechtestbackendjava.domain.ImageProduct;
 import com.example.empiretechtestbackendjava.domain.Product;
 import com.example.empiretechtestbackendjava.dto.ProductRequest;
+import com.example.empiretechtestbackendjava.dto.ProductResponse;
 import com.example.empiretechtestbackendjava.repository.ImageProductRepository;
 import com.example.empiretechtestbackendjava.repository.ProductRepository;
 import jakarta.transaction.Transactional;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
@@ -27,14 +27,14 @@ public class ProductService {
 
     @Transactional
     @CacheEvict(value = "products", keyGenerator = "customKeyCacheConfig", allEntries = true)
-    public Product createProduct(ProductRequest productRequest, List<MultipartFile> images) {
+    public ProductResponse createProduct(ProductRequest productRequest, List<MultipartFile> images) {
         Product productSaved = productRepository.save(productRequest.toModel());
 
         if(images != null && !images.isEmpty()) {
             saveImages(images, productSaved);
         }
 
-        return productSaved;
+        return ProductResponse.fromModel(productSaved);
     }
 
     private void saveImages(List<MultipartFile> images, Product productSaved) {
@@ -56,11 +56,17 @@ public class ProductService {
     }
 
     @Cacheable(value = "products", keyGenerator = "customKeyCacheConfig", condition = "#titleSearch == null")
-    public List<Product> getAllProducts(String titleSearch) {
+    public List<ProductResponse> getAllProducts(String titleSearch) {
         if(titleSearch != null) {
-            return productRepository.findAllByTitleContaining(titleSearch);
+            return productRepository.findAllByTitleContaining(titleSearch)
+                    .stream()
+                    .map(ProductResponse::fromModel)
+                    .toList();
         }
-        return productRepository.findAll();
+        return productRepository.findAll()
+                .stream()
+                .map(ProductResponse::fromModel)
+                .toList();
     }
 
     public Product getProductById(Long idProduto) {
@@ -76,10 +82,12 @@ public class ProductService {
 
     @Transactional
     @CacheEvict(value = "products", keyGenerator = "customKeyCacheConfig", allEntries = true)
-    public Product updateProduct(Long idProduto, ProductRequest product) {
+    public ProductResponse updateProduct(Long idProduto, ProductRequest product) {
         Product productForUpdate = getProductById(idProduto);
-        productForUpdate = new Product(productForUpdate.getId(), product.title(), product.description(), product.price(), null);
+        productForUpdate = new Product(productForUpdate.getId(), product.title(),
+                product.description(), product.price(), null);
 
-        return productRepository.save(productForUpdate);
+        Product updated = productRepository.save(productForUpdate);
+        return ProductResponse.fromModel(updated);
     }
 }

@@ -1,7 +1,7 @@
 package com.example.empiretechtestbackendjava.controller;
 
-import com.example.empiretechtestbackendjava.domain.Product;
 import com.example.empiretechtestbackendjava.dto.ProductRequest;
+import com.example.empiretechtestbackendjava.dto.ProductResponse;
 import com.example.empiretechtestbackendjava.service.ProductService;
 import com.example.empiretechtestbackendjava.service.SseService;
 import jakarta.validation.Valid;
@@ -25,11 +25,11 @@ public class ProductController {
     private final SseService sseService;
 
     @PostMapping
-    public ResponseEntity<Product> createProduct(@RequestPart("product") @Valid ProductRequest product,
-                                                 @RequestPart(required = false) List<MultipartFile> images) {
+    public ResponseEntity<ProductResponse> createProduct(@RequestPart("product") @Valid ProductRequest product,
+                                                         @RequestPart(required = false) List<MultipartFile> images) {
         var productSaved = productService.createProduct(product, images);
         var location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
-                .buildAndExpand(productSaved.getId()).toUri();
+                .buildAndExpand(productSaved.id()).toUri();
 
         sseService.sendEvent("Product created!");
         return ResponseEntity.created(location).body(productSaved);
@@ -43,13 +43,13 @@ public class ProductController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Product>> getAllProducts(@RequestParam(value = "title", required = false) String titleSearch) {
+    public ResponseEntity<List<ProductResponse>> getAllProducts(@RequestParam(value = "title", required = false) String titleSearch) {
         return ResponseEntity.ok(productService.getAllProducts(titleSearch));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Product> getProduct(@PathVariable("id") Long idProduto) {
-        return ResponseEntity.ok(productService.getProductById(idProduto));
+    public ResponseEntity<ProductResponse> getProduct(@PathVariable("id") Long idProduto) {
+        return ResponseEntity.ok(ProductResponse.fromModel(productService.getProductById(idProduto)));
     }
 
     @DeleteMapping("/{id}")
@@ -61,8 +61,8 @@ public class ProductController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Product> updateProduct(@PathVariable("id") Long idProduto,
-                                        @RequestBody @Valid ProductRequest product) {
+    public ResponseEntity<ProductResponse> updateProduct(@PathVariable("id") Long idProduto,
+                                                         @RequestBody @Valid ProductRequest product) {
         var productUpdated = productService.updateProduct(idProduto, product);
 
         sseService.sendEvent("Product updated!");

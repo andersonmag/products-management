@@ -28,7 +28,6 @@ public class Product implements Serializable {
     private BigDecimal price;
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
-    @JsonIgnore
     List<ImageProduct> images = new ArrayList<>();
 
     public Product(String title, String description, BigDecimal price) {
