@@ -1,5 +1,6 @@
 package com.example.empiretechtestbackendjava.service;
 
+import com.example.empiretechtestbackendjava.repository.ImageProductRepository;
 import com.example.empiretechtestbackendjava.repository.ProductRepository;
 import com.example.empiretechtestbackendjava.util.ProductFactoryTest;
 import org.junit.jupiter.api.Assertions;
@@ -23,15 +24,20 @@ public class ProductServiceTest {
 
     @Mock
     private ProductRepository productRepository;
+    @Mock
+    private ImageProductRepository imageProductRepository;
     private ProductService productService;
+
+    @Mock
+    private S3Service s3Service;
 
     @BeforeEach
     void setUp() {
-        productService = new ProductService(productRepository);
+        productService = new ProductService(productRepository, imageProductRepository, s3Service);
     }
 
     @Test
-    public void shouldCreateProduct() {
+    public void shouldCreateProductWithoutImages() {
         var productRequest = ProductFactoryTest.getRequest();
 
         productService.createProduct(productRequest, null);

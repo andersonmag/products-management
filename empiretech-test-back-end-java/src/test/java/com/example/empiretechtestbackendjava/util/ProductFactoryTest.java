@@ -2,6 +2,7 @@ package com.example.empiretechtestbackendjava.util;
 
 import com.example.empiretechtestbackendjava.domain.Product;
 import com.example.empiretechtestbackendjava.dto.ProductRequest;
+import com.example.empiretechtestbackendjava.dto.ProductResponse;
 
 import java.math.BigDecimal;
 
@@ -13,5 +14,9 @@ public class ProductFactoryTest {
 
     public static Product getModel() {
         return new Product(1L, "PS5", "The new Playstation´s console", BigDecimal.valueOf(3000), null);
+    }
+
+    public static ProductResponse getResponse() {
+       return ProductResponse.fromModel(getModel());
     }
 }

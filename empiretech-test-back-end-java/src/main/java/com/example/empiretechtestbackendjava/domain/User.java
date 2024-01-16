@@ -1,6 +1,7 @@
 package com.example.empiretechtestbackendjava.domain;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -8,6 +9,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "users")
 @NoArgsConstructor
 @Getter
+@AllArgsConstructor
 public class User {
 
     @Id
