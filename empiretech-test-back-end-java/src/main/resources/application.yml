@@ -2,10 +2,6 @@ spring:
   jackson:
     serialization:
       indent-output: true
-  datasource:
-    url: jdbc:postgresql://localhost:5432/tenancy1
-    username: postgres
-    password: admin
   jpa:
     driver-class-name: org.postgresql.Driver
     hibernate:
@@ -34,6 +30,13 @@ tenants:
       username: postgres
       password: hash
       driverClassName: ${spring.jpa.driver-class-name}
+
+aws:
+  s3:
+    bucket-name:
+    acess-key:
+    secret-key:
+    region-static:
 
 server:
   servlet:
