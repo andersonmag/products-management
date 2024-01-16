@@ -1,5 +1,6 @@
 package com.example.empiretechtestbackendjava.service;
 
+import com.example.empiretechtestbackendjava.domain.Product;
 import com.example.empiretechtestbackendjava.repository.ImageProductRepository;
 import com.example.empiretechtestbackendjava.repository.ProductRepository;
 import com.example.empiretechtestbackendjava.util.ProductFactoryTest;
@@ -10,7 +11,9 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.mock.web.MockMultipartFile;
 
+import java.util.Arrays;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
@@ -40,8 +43,30 @@ public class ProductServiceTest {
     public void shouldCreateProductWithoutImages() {
         var productRequest = ProductFactoryTest.getRequest();
 
-        productService.createProduct(productRequest, null);
+        Mockito.when(productRepository.save(any(Product.class))).thenReturn(ProductFactoryTest.getModel());
+        var productSaved = productService.createProduct(productRequest, null);
+
         verify(productRepository, times(1)).save(any());
+        verify(productRepository, times(1)).save(any());
+        int quantidadeImagensRetorno = 0;
+        Assertions.assertEquals(quantidadeImagensRetorno, productSaved.images().size());
+    }
+
+    @Test
+    public void shouldCreateProductWithImage() {
+        var productRequest = ProductFactoryTest.getRequest();
+        var fileNameTest = "image-teste.jpg";
+        MockMultipartFile image = new MockMultipartFile(fileNameTest, fileNameTest,
+                "image/jpeg", fileNameTest.getBytes());
+
+        Mockito.when(productRepository.save(any(Product.class))).thenReturn(ProductFactoryTest.getModel());
+        var productSaved = productService.createProduct(productRequest, Arrays.asList(image));
+
+        verify(productRepository, times(1)).save(any());
+        verify(imageProductRepository, times(1)).save(any());
+        int quantidadeImagensRetorno = 1;
+        Assertions.assertEquals(quantidadeImagensRetorno, productSaved.images().size());
+        Assertions.assertEquals(image.getName(), productSaved.images().get(0).getName());
     }
 
     @Test
