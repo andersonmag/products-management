@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -19,16 +20,16 @@ public class Product implements Serializable {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = true)
+    @Column(nullable = false)
     private String title;
-    @Column(nullable = true)
+    @Column(nullable = false)
     private String description;
-    @Column(nullable = true)
+    @Column(nullable = false)
     private BigDecimal price;
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
     @JsonIgnore
-    List<ImageProduct> images;
+    List<ImageProduct> images = new ArrayList<>();
 
     public Product(String title, String description, BigDecimal price) {
         this.title = title;
