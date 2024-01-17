@@ -1,0 +1,9 @@
+@import "~bootstrap/dist/css/bootstrap.css";
+
+:root {
+  --primary-color: #3a3a3a;
+  --secondary-color: #495057;
+  --third-color: #0d6efd;
+}
+
+
