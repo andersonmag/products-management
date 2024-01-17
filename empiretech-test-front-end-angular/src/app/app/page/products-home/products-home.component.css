@@ -1,0 +1,13 @@
+.table__products {
+  margin: 5% 0;
+  width: 100%;
+}
+
+.table__products th {
+  color: var(--secondary-color);
+}
+
+.table__products__images {
+  width: 80px;
+  margin-right: 5px;
+}
