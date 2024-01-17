@@ -1,7 +1,9 @@
+import { Router } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
 import { Product } from '../../model/product';
 import { ProductsService } from '../../service/products.service';
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { TokenAuthenticationService } from '../../service/token-authentication.service';
 
 @Component({
   selector: 'app-products-home',
@@ -13,9 +15,16 @@ export class ProductsHomeComponent implements OnInit, OnDestroy{
   products!: Product[];
   private readonly destroy$ : Subject<void> = new Subject<void>();
 
-  constructor(private productService : ProductsService) { }
+  constructor(private productService : ProductsService,
+    private tokenService: TokenAuthenticationService,
+    private router: Router)  { }
 
   ngOnInit(): void {
+    if(this.tokenService.isLogged()) {
+      this.router.navigateByUrl('/')
+      return
+    }
+
     this.getProducts();
   }
 

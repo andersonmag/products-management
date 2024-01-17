@@ -1,0 +1,42 @@
+<div class="container login__form">
+
+    <h4 class="text-center text-muted mt-4 mb-4">
+        Vaga FullStack EmpireTech
+    </h4>
+    <div class="login__form center-box border rounded-bottom rounded-right pl-5 pr-5 pt-4">
+      <form class="mb-4" style=" width: 300px;" [formGroup]="formLogin" (submit)="autenticate()">
+
+        <h5 class="mb-5 font-weight-normal text-muted text-center">Entrar no Sistema</h5>
+
+        <div class="form-group">
+          <label for="username">Username</label>
+          <input formControlName="username" type="text" id="username" class="form-control" placeholder="Digite o username">
+          <app-message-error-form id="errorUsername" style="display: none;"
+          message="Informe o Username"></app-message-error-form>
+        </div>
+
+        <div class="form-group mt-3">
+          <label for="password">Senha</label>
+          <input formControlName="password" type="password" id="password" class="form-control" placeholder="Digite a Senha">
+          <app-message-error-form id="errorPassword" style="display: none;"
+            message="Informe a Senha"></app-message-error-form>
+        </div>
+
+        <div class="form-group mt-3">
+          <label for="tenant">Tenant</label><br>
+          <select formControlName="tenant" required="true" id="tenant" class="custom-select" id="inputGroupSelect01" aria-describedby="tenantHelp">
+            <option selected value="">SELECIONE</option>
+            <option value="tenant1">Tenant 1</option>
+            <option value="tenant2">Tenant 2</option>
+          </select>
+          <app-message-error-form id="errorTenant" style="display: none;"
+            message="Informe o Tenant"></app-message-error-form>
+        </div>
+          <small style="font-size: 0.8rem;" id="tenantHelp" class="form-text text-muted"> <strong></strong>Tenant são clientes do sistema, com dados e configurações diferentes.</small>
+
+          <div class="form-group text-center mt-4">
+            <button class="btn btn-primary btn-block active mt-2 mb-3" type="submit">Logar</button>
+          </div>
+      </form>
+    </div>
+  </div>

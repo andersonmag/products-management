@@ -1,0 +1,90 @@
+import { User } from './../../model/user';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { UserService } from '../../service/user.service';
+import { Router } from '@angular/router';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { TokenAuthenticationService } from '../../service/token-authentication.service';
+import { Subject, takeUntil } from 'rxjs';
+
+@Component({
+  selector: 'app-login',
+  templateUrl: './login.component.html',
+  styleUrls: ['./login.component.css']
+})
+export class LoginComponent implements OnInit, OnDestroy{
+
+  userLogin: User = new User();
+  errors!: string[];
+  formLogin!: FormGroup;
+  private readonly destroy$ : Subject<void> = new Subject<void>();
+
+  constructor(private userService : UserService,
+    private tokenService : TokenAuthenticationService,
+     private router: Router,
+     private formBuilder: FormBuilder) { }
+
+  ngOnInit(): void {
+    if (this.tokenService.isLogged()) {
+      this.router.navigateByUrl('/')
+      return
+    }
+
+    this.formLogin = this.formBuilder.group({
+      username: ['', Validators.required],
+      password: ['', Validators.required],
+      tenant: ['', Validators.required],
+    }, { updateOn: 'blur' })
+  }
+
+  autenticate() {
+    this.userLogin.username = this.formLogin.get('username')?.value
+    this.userLogin.password = this.formLogin.get('password')?.value
+    const tenant = this.formLogin.get('tenant')?.value
+
+    if(!this.validFields())
+      return;
+
+    this.userService.authenticate(this.userLogin, tenant)
+    .pipe(takeUntil(this.destroy$))
+    .subscribe( data => {
+      const token = JSON.parse(JSON.stringify(data));
+
+        this.tokenService.setToken(token);
+        this.router.navigate(['/products']).then(() => window.location.reload());
+    }, error => {
+      if(error.status === 200) {
+        const token = JSON.parse(JSON.stringify("Bearer teste"));
+
+      this.tokenService.setToken(token);
+      this.router.navigate(['/products']).then(() => window.location.reload());
+      }
+
+      console.log(error);
+      alert('Usuário ou senha inválidos. Tente novamente.')
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
+  validFields() : boolean {
+    if(this.userLogin.username === '') {
+      document.getElementById('errorUsername')!.style.display = 'block';
+        return false;
+      }
+
+    if(this.userLogin.password === '') {
+      document.getElementById('errorPassword')!.style.display = 'block';
+        return false;
+    }
+
+    if(this.formLogin.get('tenant')?.value === '') {
+      document.getElementById('errorTenant')!.style.display = 'block';
+        return false;
+      }
+
+      return true;
+  }
+}

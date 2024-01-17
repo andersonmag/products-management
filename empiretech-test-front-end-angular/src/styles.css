@@ -6,4 +6,6 @@
   --third-color: #0d6efd;
 }
 
-
+.alert {
+  padding: 4px;
+}
