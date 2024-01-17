@@ -9,6 +9,7 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
+    open-in-view: false
   cache:
     type: redis
 
@@ -22,14 +23,15 @@ tenants:
   datasources:
     tenant1:
       url: jdbc:postgresql://localhost:5432/tenant1
-      username: postgres
-      password: admin
+      username:
+      password:
       driverClassName: ${spring.jpa.driver-class-name}
     tenant2:
       url: jdbc:postgresql://localhost:5433/tenant2
-      username: postgres
-      password: hash
+      username:
+      password:
       driverClassName: ${spring.jpa.driver-class-name}
+
 
 aws:
   s3:

@@ -26,7 +26,7 @@ public class Product implements Serializable {
     @Column(nullable = false)
     private BigDecimal price;
 
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     List<ImageProduct> images = new ArrayList<>();
 
     public Product(String title, String description, BigDecimal price) {

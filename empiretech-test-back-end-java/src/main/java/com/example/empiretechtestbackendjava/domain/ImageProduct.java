@@ -2,15 +2,18 @@ package com.example.empiretechtestbackendjava.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
 import java.util.UUID;
 
 @Entity
 @NoArgsConstructor
+@AllArgsConstructor
 @Getter
-public class ImageProduct {
+public class ImageProduct implements Serializable {
 
     @Id @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
