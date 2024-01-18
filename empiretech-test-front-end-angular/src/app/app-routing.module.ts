@@ -5,10 +5,11 @@ import { ProductsHomeComponent } from './app/page/products-home/products-home.co
 import { LoginComponent } from './app/page/login/login.component';
 
 const routes: Routes = [
-  { path: 'login', component: LoginComponent},
-  { path: 'products', component: ProductsHomeComponent},
-];
-
+  { path: 'login', component: LoginComponent },
+  { path: 'products', component: ProductsHomeComponent },
+  { path: '', redirectTo: 'products', pathMatch: 'full' },
+  { path: '*', redirectTo: 'products' },
+]
 
 @NgModule({
   imports: [ RouterModule.forRoot(routes) ],
