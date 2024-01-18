@@ -46,21 +46,13 @@ export class LoginComponent implements OnInit, OnDestroy{
 
     this.userService.authenticate(this.userLogin, tenant)
     .pipe(takeUntil(this.destroy$))
-    .subscribe( data => {
-      const token = JSON.parse(JSON.stringify(data));
-
+    .subscribe({
+      next: token => {
         this.tokenService.setToken(token);
         this.router.navigate(['/products']).then(() => window.location.reload());
-    }, error => {
-      if(error.status === 200) {
-        const token = JSON.parse(JSON.stringify("Bearer teste"));
-
-      this.tokenService.setToken(token);
-      this.router.navigate(['/products']).then(() => window.location.reload());
+      }, error: (err) => {
+        console.log(err);
       }
-
-      console.log(error);
-      alert('Usuário ou senha inválidos. Tente novamente.')
     });
   }
 

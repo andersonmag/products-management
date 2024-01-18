@@ -16,8 +16,9 @@ private REQUEST_URL: string = "http://localhost:8080/api/login";
     private httpClient: HttpClient,
     private router: Router) { }
 
-  authenticate(user: User, tenantSelected: string): Observable<string> {
+  authenticate(user: User, tenantSelected: string): Observable<any> {
     const json = JSON.stringify(user);
-    return this.httpClient.post<string>(this.REQUEST_URL, json, { headers: { 'X-TenantyID': tenantSelected, 'Content-Type': 'application/json' }});
+    return this.httpClient.post<any>(this.REQUEST_URL, json,
+      { headers: { 'X-TenantyID': tenantSelected, 'Content-Type': 'application/json' }, responseType: 'text' as 'json'});
   }
 }

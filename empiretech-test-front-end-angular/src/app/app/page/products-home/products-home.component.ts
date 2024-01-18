@@ -20,8 +20,8 @@ export class ProductsHomeComponent implements OnInit, OnDestroy{
     private router: Router)  { }
 
   ngOnInit(): void {
-    if(this.tokenService.isLogged()) {
-      this.router.navigateByUrl('/')
+    if(!this.tokenService.isLogged()) {
+      this.router.navigateByUrl('/login');
       return
     }
 

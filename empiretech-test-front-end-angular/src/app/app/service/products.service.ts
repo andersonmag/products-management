@@ -14,9 +14,8 @@ export class ProductsService {
   constructor(private httpClient: HttpClient, private tokenService : TokenAuthenticationService) { }
 
   getProducts(): Observable<any> {
-    const token = '';
-    const headers = new HttpHeaders().set('Authorization', token);
-    return this.httpClient.get<any>(this.REQUEST_URL, { headers });
+    const token = this.tokenService.getToken();
+    return this.httpClient.get<any>(this.REQUEST_URL, { headers: {'Authorization': token}   });
   }
 
   subscribeProductsChange(): Observable<any> {
