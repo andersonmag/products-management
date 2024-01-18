@@ -26,8 +26,15 @@ tenants:
 ```
 #### Criar Databases em seus links
 ```sql 
-CREATE TABLE "tenant1";
-CREATE TABLE "tenant12";
+CREATE DATABASE "tenant1";
+INSERT INTO user(name, username, password) VALUES ('user', 'username_tenant1', '$2a$10$FCIFxGfXNnoh5kV3bt1/.OWrCRwwu3Nf6YiOG4i20bFCtKxHv8BY2');
+-- password 123
+...
+
+CREATE DATABASE "tenant12";
+INSERT INTO user(name, username, password) VALUES ('user', 'username_tenant2', '$2a$10$FCIFxGfXNnoh5kV3bt1/.OWrCRwwu3Nf6YiOG4i20bFCtKxHv8BY2');
+-- password 123
+
 ...
 ```
 
@@ -35,9 +42,24 @@ CREATE TABLE "tenant12";
 
 ## Front-end (port 4200)
 
-### executar comandos
+### Executar comandos
 
 ```npm
 ng build
 ng serve
+```
+
+### Para acessar
+### Back-end
+```txt
+http://localhost:8080/api/login
+http://localhost:8080/api/products
+```
+For login:
+Acess `http://localhost:8080/api/login` and send POST request with JSON (**username and password**) and header **X-TenantyID** with **tenant name**.
+
+### Front-end
+```txt
+http://localhost:4200/login 
+http://localhost:4200/products
 ```
