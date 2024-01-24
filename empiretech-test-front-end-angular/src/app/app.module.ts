@@ -32,7 +32,9 @@ import { MessageErrorFormComponent } from './app/page/util/message-error-form/me
     MatListModule,
     AppRoutingModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    BrowserAnimationsModule,
+    MatButtonModule
   ],
   providers: [],
   bootstrap: [AppComponent]

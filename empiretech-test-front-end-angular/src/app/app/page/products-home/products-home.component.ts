@@ -14,6 +14,7 @@ export class ProductsHomeComponent implements OnInit, OnDestroy{
 
   products!: Product[];
   private readonly destroy$ : Subject<void> = new Subject<void>();
+  displayedColumns = ['id', 'title', 'description', 'price', 'images']
 
   constructor(private productService : ProductsService,
     private tokenService: TokenAuthenticationService,

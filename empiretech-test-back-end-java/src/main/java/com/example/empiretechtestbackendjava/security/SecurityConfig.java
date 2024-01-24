@@ -35,6 +35,7 @@ public class SecurityConfig {
             .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(autorize ->
                     autorize.requestMatchers(HttpMethod.POST, "/login").permitAll()
+                            .requestMatchers(HttpMethod.GET, "/products/sse").permitAll()
                             .anyRequest().authenticated())
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class).cors();

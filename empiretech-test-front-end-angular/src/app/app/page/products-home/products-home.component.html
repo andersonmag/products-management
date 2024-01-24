@@ -1,33 +1,41 @@
 
 <main class="container mt-5" style="width: 60%">
-  <div class="d-flex justify-content-between align-items-end">
+  <div class="d-flex justify-content-between align-items-end d-row" >
     <div class="title">
       <h2 class="text-monospace">Produtos</h2>
       <span class="text-muted">Lista de produtos vindos da API Rest.</span>
     </div>
-    <button type="button" class="btn btn-primary">Novo Produto</button>
+    <button mat-raised-button color="primary">Novo Produto</button>
   </div>
+    <table mat-table [dataSource]="products" class="">
+      <ng-container matColumnDef="id">
+        <th mat-header-cell *matHeaderCellDef> Id </th>
+        <td mat-cell *matCellDef="let product"> {{product.id}} </td>
+      </ng-container>
 
-  <table class="table table__products table-striped" >
-    <thead>
-      <tr scope="row">
-        <th scope="col">Id</th>
-        <th scope="col">Nome</th>
-        <th scope="col">Descrição</th>
-        <th scope="col">Preço</th>
-        <th scope="col">Imagens</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let product of products">
-        <td>{{product.id}}</td>
-        <td>{{product.title}}</td>
-        <td>{{product.description}}</td>
-        <td>{{product.price}}</td>
-        <td>
-          <img *ngFor="let image of product.images" [src]="image.link" [alt]="product.title" class="img-thumbnail table__products__images">
+      <ng-container matColumnDef="title">
+        <th mat-header-cell *matHeaderCellDef> Title </th>
+        <td mat-cell *matCellDef="let product"> {{product.title}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="description">
+        <th mat-header-cell *matHeaderCellDef> Descrição </th>
+        <td mat-cell *matCellDef="let product"> {{product.description}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="price">
+        <th mat-header-cell *matHeaderCellDef> Preço </th>
+        <td mat-cell *matCellDef="let product"> {{product.price}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="images">
+        <th mat-header-cell *matHeaderCellDef> Imagens </th>
+        <td mat-cell *matCellDef="let product">
+          <img [src]="image.link" [alt]="image.name" class="table__products__images" *ngFor="let image of product.images">
         </td>
-      </tr>
-    </tbody>
-  </table>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
 </main>
