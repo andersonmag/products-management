@@ -1,4 +1,4 @@
-# FullStack EmpireTech Test for Pleno
+# A product management system with CRUD, AWS storage, and real-time updates
 
 ## Para executar
 ## Back-end(port 8080)
