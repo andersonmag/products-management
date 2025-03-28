@@ -11,7 +11,6 @@ import com.example.empiretechtestbackendjava.security.AuthenticationJwtFilter;
 import com.example.empiretechtestbackendjava.security.SecurityConfig;
 import com.example.empiretechtestbackendjava.service.JwtService;
 import com.example.empiretechtestbackendjava.service.ProductService;
-import com.example.empiretechtestbackendjava.service.SseService;
 import com.example.empiretechtestbackendjava.service.UserDetailsServiceImpl;
 import com.example.empiretechtestbackendjava.util.ProductFactoryTest;
 import com.example.empiretechtestbackendjava.util.UserFactoryTest;
@@ -45,7 +44,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @ExtendWith(SpringExtension.class)
 @WebMvcTest(ProductController.class)
-@ContextConfiguration(classes = {SecurityConfig.class, AuthenticationJwtFilter.class, UserDetailsServiceImpl.class, ProductController.class, UserRepository.class, SseService.class})
+@ContextConfiguration(classes = {SecurityConfig.class, AuthenticationJwtFilter.class, UserDetailsServiceImpl.class, ProductController.class, UserRepository.class})
 @EnableConfigurationProperties(value = {DataSourcesPropertiesConfig.class, JwtPropertiesConfig.class})
 public class ProductControllerTest {
 
@@ -67,7 +66,8 @@ public class ProductControllerTest {
     private DataSourceTenantConfig dataSourceTenantConfig;
 
     @BeforeEach
-    public void setUp() {}
+    public void setUp() {
+    }
 
     @Test
     public void shoudCreateProduct() throws Exception {
@@ -82,9 +82,9 @@ public class ProductControllerTest {
         BDDMockito.given(productService.createProduct(productRequest, null)).willReturn(productSaved);
 
         mvc.perform(MockMvcRequestBuilders.multipart(REQUEST_URL)
-                    .file(partProduct)
-                    .contentType(MediaType.MULTIPART_FORM_DATA)
-                    .header(HEADER_TOKEN_NAME, token))
+                        .file(partProduct)
+                        .contentType(MediaType.MULTIPART_FORM_DATA)
+                        .header(HEADER_TOKEN_NAME, token))
                 .andExpect(status().isCreated())
                 .andExpect(header().exists("location"))
                 .andExpect(jsonPath("title").isNotEmpty());
@@ -105,7 +105,6 @@ public class ProductControllerTest {
                 .andExpect(jsonPath("id").isNotEmpty())
                 .andExpect(jsonPath("title").isNotEmpty());
     }
-
 
 
     @Test
@@ -159,7 +158,7 @@ public class ProductControllerTest {
     public void shoudUpdateProductById() throws Exception {
         Long id = 1L;
         var productForUpdate = ProductFactoryTest.getModel();
-        var productRequest = new ProductRequest( "Xbox 360", "Xbox 360 the console of Z generation", BigDecimal.valueOf(1000));
+        var productRequest = new ProductRequest("Xbox 360", "Xbox 360 the console of Z generation", BigDecimal.valueOf(1000));
         var product = ProductResponse.fromModel(new Product(1L, "Xbox 360", "Xbox 360 the console of Z generation", BigDecimal.valueOf(1000), null));
         String json = mappper.writeValueAsString(productRequest);
         var token = getTokenForTests();
