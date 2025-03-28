@@ -1,4 +1,9 @@
+server:
+  servlet:
+    context-path: /api
 spring:
+  application:
+    name: products-management
   jackson:
     serialization:
       indent-output: true
@@ -12,35 +17,19 @@ spring:
     open-in-view: false
   cache:
     type: redis
-
+  datasource:
+    url: jdbc:postgresql://localhost:5432/tenants-db
+    username:
+    password:
+    driver-class-name: org.postgresql.Driver
 jwt:
   secret-key: 3aa15421-55d3-48f2-8372-ddca66362e98
   token-prefix: Bearer
   token-header: Authorization
   expiration-time: 3600000
-
-tenants:
-  datasources:
-    tenant1:
-      url: jdbc:postgresql://localhost:5432/tenant1
-      username:
-      password:
-      driverClassName: ${spring.jpa.driver-class-name}
-    tenant2:
-      url: jdbc:postgresql://localhost:5433/tenant2
-      username:
-      password:
-      driverClassName: ${spring.jpa.driver-class-name}
-
-
 aws:
   s3:
     bucket-name:
     acess-key:
     secret-key:
     region-static:
-
-server:
-  servlet:
-    context-path: /api
-

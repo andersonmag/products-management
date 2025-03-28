@@ -1,6 +1,5 @@
 package com.example.empiretechtestbackendjava.security;
 
-import com.example.empiretechtestbackendjava.config.DataSourceTenantConfig;
 import com.example.empiretechtestbackendjava.service.JwtService;
 import io.jsonwebtoken.JwtException;
 import jakarta.servlet.FilterChain;
@@ -20,29 +19,18 @@ import java.io.IOException;
 public class AuthenticationJwtFilter extends OncePerRequestFilter {
 
     private final JwtService jwtService;
-    private final DataSourceTenantConfig dataSourceTenantConfig;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         var token = request.getHeader(jwtService.getHeaderToken());
 
-        if(token != null) {
+        if (token != null) {
             try {
                 var authentication = jwtService.validAuthenticationToken(token);
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             } catch (JwtException exception) {
                 response.setStatus(HttpStatus.UNAUTHORIZED.value());
             }
-        } else {
-            var tenantIdHeader = "X-TenantyID";
-            var tenant = request.getHeader(tenantIdHeader);
-
-            if(tenant == null) {
-                response.setStatus(HttpStatus.BAD_REQUEST.value());
-                return;
-            }
-            dataSourceTenantConfig.setCurrentTenant(tenant);
-            dataSourceTenantConfig.defineDataSourceByTenantUser();
         }
 
         filterChain.doFilter(request, response);

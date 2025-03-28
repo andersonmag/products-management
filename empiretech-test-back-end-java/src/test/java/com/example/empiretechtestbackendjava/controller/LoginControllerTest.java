@@ -1,7 +1,5 @@
 package com.example.empiretechtestbackendjava.controller;
 
-import com.example.empiretechtestbackendjava.config.DataSourceTenantConfig;
-import com.example.empiretechtestbackendjava.config.DataSourcesPropertiesConfig;
 import com.example.empiretechtestbackendjava.config.JwtPropertiesConfig;
 import com.example.empiretechtestbackendjava.domain.Product;
 import com.example.empiretechtestbackendjava.dto.ProductRequest;
@@ -45,7 +43,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ExtendWith(SpringExtension.class)
 @WebMvcTest(ProductController.class)
 @ContextConfiguration(classes = {SecurityConfig.class, AuthenticationJwtFilter.class, UserDetailsServiceImpl.class, ProductController.class, UserRepository.class})
-@EnableConfigurationProperties(value = {DataSourcesPropertiesConfig.class, JwtPropertiesConfig.class})
+@EnableConfigurationProperties(value = {JwtPropertiesConfig.class})
 public class LoginControllerTest {
 
     private static final String REQUEST_URL = "/products";
@@ -62,8 +60,6 @@ public class LoginControllerTest {
     private JwtService jwtService;
     @Mock
     private JwtPropertiesConfig jwtPropertiesConfig;
-    @MockBean
-    private DataSourceTenantConfig dataSourceTenantConfig;
 
     @BeforeEach
     public void setUp() {
