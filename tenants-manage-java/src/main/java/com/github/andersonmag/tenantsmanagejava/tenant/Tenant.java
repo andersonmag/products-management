@@ -10,7 +10,7 @@ import org.springframework.beans.BeanUtils;
 @Getter
 @Setter
 @NoArgsConstructor
-@Table(schema = "tenants")
+@Table(name = "tenants")
 public class Tenant {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
