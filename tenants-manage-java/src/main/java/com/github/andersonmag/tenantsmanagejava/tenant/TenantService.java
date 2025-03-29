@@ -19,6 +19,6 @@ public class TenantService {
 
     @Transactional(readOnly = true)
     public Tenant getById(Long idTenant) {
-        return repository.getReferenceById(idTenant);
+        return repository.findById(idTenant).orElseThrow();
     }
 }
