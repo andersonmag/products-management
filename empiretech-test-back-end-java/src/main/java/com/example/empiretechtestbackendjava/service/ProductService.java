@@ -1,16 +1,16 @@
 package com.example.empiretechtestbackendjava.service;
 
-import com.example.empiretechtestbackendjava.domain.ImageProduct;
-import com.example.empiretechtestbackendjava.domain.Product;
-import com.example.empiretechtestbackendjava.dto.ProductRequest;
-import com.example.empiretechtestbackendjava.dto.ProductResponse;
+import com.example.empiretechtestbackendjava.domain.dtos.ProductRequest;
+import com.example.empiretechtestbackendjava.domain.dtos.ProductResponse;
+import com.example.empiretechtestbackendjava.domain.entities.ImageProduct;
+import com.example.empiretechtestbackendjava.domain.entities.Product;
 import com.example.empiretechtestbackendjava.repository.ImageProductRepository;
 import com.example.empiretechtestbackendjava.repository.ProductRepository;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -30,7 +30,7 @@ public class ProductService {
     public ProductResponse createProduct(ProductRequest productRequest, List<MultipartFile> images) {
         Product productSaved = productRepository.save(productRequest.toModel());
 
-        if(images != null && !images.isEmpty()) {
+        if (images != null && !images.isEmpty()) {
             saveImages(images, productSaved);
         }
 
@@ -55,15 +55,12 @@ public class ProductService {
         }
     }
 
+    @Transactional(readOnly = true)
     @Cacheable(value = "products", keyGenerator = "customKeyCacheConfig", condition = "#titleSearch == null")
     public List<ProductResponse> getAllProducts(String titleSearch) {
-        if(titleSearch != null) {
-            return productRepository.findAllByTitleContaining(titleSearch)
-                    .stream()
-                    .map(ProductResponse::fromModel)
-                    .toList();
-        }
-        return productRepository.findAll()
+        return (titleSearch != null ?
+                productRepository.findAllByTitleContaining(titleSearch)
+                : productRepository.findAll())
                 .stream()
                 .map(ProductResponse::fromModel)
                 .toList();
@@ -74,6 +71,7 @@ public class ProductService {
                 -> new IllegalArgumentException("Id de produto não encontrado"));
     }
 
+    @Transactional
     @CacheEvict(value = "products", keyGenerator = "customKeyCacheConfig", allEntries = true)
     public void removeProductById(Long idProduto) {
         Product product = getProductById(idProduto);

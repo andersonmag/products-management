@@ -19,12 +19,12 @@ public class TenantController {
     public ResponseEntity<HttpMethod> createProduct(@RequestBody @Valid TenantRequest request) {
         var created = service.create(request);
         var location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
-                .buildAndExpand(created.getId()).toUri();
+                .buildAndExpand(created.getDomain()).toUri();
         return ResponseEntity.created(location).build();
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<Tenant> getTenant(@PathVariable("id") Long idTenant) {
-        return ResponseEntity.ok(service.getById(idTenant));
+    @GetMapping("/{domain}")
+    public ResponseEntity<Tenant> getTenant(@PathVariable String domain) {
+        return ResponseEntity.ok(service.getByDomain(domain));
     }
 }

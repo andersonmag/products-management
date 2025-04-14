@@ -8,20 +8,11 @@ spring:
     serialization:
       indent-output: true
   jpa:
-    driver-class-name: org.postgresql.Driver
     hibernate:
       ddl-auto: update
-    properties:
-      hibernate:
-        dialect: org.hibernate.dialect.PostgreSQLDialect
     open-in-view: false
   cache:
     type: redis
-  datasource:
-    url: jdbc:postgresql://localhost:5432/tenants-db
-    username:
-    password:
-    driver-class-name: org.postgresql.Driver
 jwt:
   secret-key: 3aa15421-55d3-48f2-8372-ddca66362e98
   token-prefix: Bearer
@@ -33,3 +24,6 @@ aws:
     acess-key:
     secret-key:
     region-static:
+tenant:
+  service:
+    url: ${TENANT_SERVICE_URL}:http://localhost:8081/tenants

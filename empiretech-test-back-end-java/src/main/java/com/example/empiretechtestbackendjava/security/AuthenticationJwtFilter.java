@@ -1,6 +1,9 @@
 package com.example.empiretechtestbackendjava.security;
 
+import com.example.empiretechtestbackendjava.config.TenantContext;
+import com.example.empiretechtestbackendjava.database.MultiTenantDataSource;
 import com.example.empiretechtestbackendjava.service.JwtService;
+import com.example.empiretechtestbackendjava.service.TenantServiceClient;
 import io.jsonwebtoken.JwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -19,24 +22,35 @@ import java.io.IOException;
 public class AuthenticationJwtFilter extends OncePerRequestFilter {
 
     private final JwtService jwtService;
+    private final TenantServiceClient tenantClient;
+    private final MultiTenantDataSource tenantDataSource;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        var token = request.getHeader(jwtService.getHeaderToken());
+        try {
+            final var domain = extractDomainFromHost(request.getServerName());
+            final var tenant = tenantClient.getTenant(domain);
 
-        if (token != null) {
-            try {
-                var authentication = jwtService.validAuthenticationToken(token);
-                SecurityContextHolder.getContext().setAuthentication(authentication);
-            } catch (JwtException exception) {
-                response.setStatus(HttpStatus.UNAUTHORIZED.value());
+            tenantDataSource.addTenant(tenant);
+            TenantContext.setTenant(tenant);
+
+            var token = request.getHeader(jwtService.getHeaderToken());
+            if (token != null) {
+                try {
+                    var authentication = jwtService.validAuthenticationToken(token);
+                    SecurityContextHolder.getContext().setAuthentication(authentication);
+                } catch (JwtException exception) {
+                    response.setStatus(HttpStatus.UNAUTHORIZED.value());
+                }
             }
-        }
 
-        filterChain.doFilter(request, response);
+            filterChain.doFilter(request, response);
+        } finally {
+            TenantContext.clear();
+        }
     }
 
-    @Override
-    public void destroy() {
+    private String extractDomainFromHost(String host) {
+        return host.contains(".") ? host.split("\\.")[0] : "";
     }
 }

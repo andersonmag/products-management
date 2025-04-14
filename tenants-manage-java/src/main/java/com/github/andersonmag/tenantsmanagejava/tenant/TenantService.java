@@ -18,7 +18,7 @@ public class TenantService {
     }
 
     @Transactional(readOnly = true)
-    public Tenant getById(Long idTenant) {
-        return repository.findById(idTenant).orElseThrow();
+    public Tenant getByDomain(String domain) {
+        return repository.findByDomain(domain).orElseThrow();
     }
 }
