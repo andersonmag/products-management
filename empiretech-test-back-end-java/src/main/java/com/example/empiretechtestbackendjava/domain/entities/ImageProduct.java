@@ -1,4 +1,4 @@
-package com.example.empiretechtestbackendjava.domain;
+package com.example.empiretechtestbackendjava.domain.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;

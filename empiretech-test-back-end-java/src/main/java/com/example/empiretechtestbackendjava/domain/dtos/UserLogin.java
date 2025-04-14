@@ -1,4 +1,4 @@
-package com.example.empiretechtestbackendjava.dto;
+package com.example.empiretechtestbackendjava.domain.dtos;
 
 import jakarta.validation.constraints.NotBlank;
 

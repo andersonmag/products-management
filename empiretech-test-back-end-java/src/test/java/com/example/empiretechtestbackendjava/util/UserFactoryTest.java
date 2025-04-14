@@ -1,6 +1,6 @@
 package com.example.empiretechtestbackendjava.util;
 
-import com.example.empiretechtestbackendjava.domain.User;
+import com.example.empiretechtestbackendjava.domain.entities.User;
 
 public class UserFactoryTest {
 

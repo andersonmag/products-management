@@ -1,7 +1,7 @@
-package com.example.empiretechtestbackendjava.dto;
+package com.example.empiretechtestbackendjava.domain.dtos;
 
-import com.example.empiretechtestbackendjava.domain.ImageProduct;
-import com.example.empiretechtestbackendjava.domain.Product;
+import com.example.empiretechtestbackendjava.domain.entities.ImageProduct;
+import com.example.empiretechtestbackendjava.domain.entities.Product;
 
 import java.io.Serializable;
 import java.math.BigDecimal;

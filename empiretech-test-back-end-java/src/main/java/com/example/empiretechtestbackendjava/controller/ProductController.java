@@ -1,7 +1,7 @@
 package com.example.empiretechtestbackendjava.controller;
 
-import com.example.empiretechtestbackendjava.dto.ProductRequest;
-import com.example.empiretechtestbackendjava.dto.ProductResponse;
+import com.example.empiretechtestbackendjava.domain.dtos.ProductRequest;
+import com.example.empiretechtestbackendjava.domain.dtos.ProductResponse;
 import com.example.empiretechtestbackendjava.service.ProductService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;

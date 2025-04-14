@@ -1,6 +1,6 @@
 package com.example.empiretechtestbackendjava.controller;
 
-import com.example.empiretechtestbackendjava.dto.UserLogin;
+import com.example.empiretechtestbackendjava.domain.dtos.UserLogin;
 import com.example.empiretechtestbackendjava.service.JwtService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -19,7 +19,7 @@ public class LoginController {
     private final JwtService jwtService;
 
     @PostMapping
-    public ResponseEntity login(@RequestBody @Valid UserLogin userLogin) {
+    public ResponseEntity<String> login(@RequestBody @Valid UserLogin userLogin) {
         var authentication = authManager.authenticate(
                 new UsernamePasswordAuthenticationToken(userLogin.username(), userLogin.password()));
         var token = jwtService.generateToken(authentication.getName());

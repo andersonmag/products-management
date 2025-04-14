@@ -1,9 +1,9 @@
 package com.example.empiretechtestbackendjava.controller;
 
 import com.example.empiretechtestbackendjava.config.JwtPropertiesConfig;
-import com.example.empiretechtestbackendjava.domain.Product;
-import com.example.empiretechtestbackendjava.dto.ProductRequest;
-import com.example.empiretechtestbackendjava.dto.ProductResponse;
+import com.example.empiretechtestbackendjava.domain.entities.Product;
+import com.example.empiretechtestbackendjava.domain.dtos.ProductRequest;
+import com.example.empiretechtestbackendjava.domain.dtos.ProductResponse;
 import com.example.empiretechtestbackendjava.repository.UserRepository;
 import com.example.empiretechtestbackendjava.security.AuthenticationJwtFilter;
 import com.example.empiretechtestbackendjava.security.SecurityConfig;

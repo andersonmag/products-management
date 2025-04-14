@@ -1,6 +1,6 @@
-package com.example.empiretechtestbackendjava.dto;
+package com.example.empiretechtestbackendjava.domain.dtos;
 
-import com.example.empiretechtestbackendjava.domain.Product;
+import com.example.empiretechtestbackendjava.domain.entities.Product;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 

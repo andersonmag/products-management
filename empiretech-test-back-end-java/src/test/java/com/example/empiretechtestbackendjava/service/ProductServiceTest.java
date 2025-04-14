@@ -1,6 +1,6 @@
 package com.example.empiretechtestbackendjava.service;
 
-import com.example.empiretechtestbackendjava.domain.Product;
+import com.example.empiretechtestbackendjava.domain.entities.Product;
 import com.example.empiretechtestbackendjava.repository.ImageProductRepository;
 import com.example.empiretechtestbackendjava.repository.ProductRepository;
 import com.example.empiretechtestbackendjava.util.ProductFactoryTest;
