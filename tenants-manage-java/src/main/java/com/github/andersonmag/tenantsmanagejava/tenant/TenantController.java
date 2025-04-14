@@ -16,7 +16,7 @@ public class TenantController {
     private final TenantService service;
 
     @PostMapping
-    public ResponseEntity<HttpMethod> createProduct(@RequestBody @Valid TenantRequest request) {
+    public ResponseEntity<HttpMethod> createTenant(@RequestBody @Valid TenantRequest request) {
         var created = service.create(request);
         var location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
                 .buildAndExpand(created.getDomain()).toUri();
