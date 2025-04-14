@@ -1,9 +1,9 @@
 import { Router } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
-import { Product } from '../../model/product';
-import { ProductsService } from '../../service/products.service';
+import { Product } from '../../models/product';
+import { ProductsService } from '../../services/products.service';
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { TokenAuthenticationService } from '../../service/token-authentication.service';
+import { TokenAuthenticationService } from '../../services/token-authentication.service';
 
 @Component({
   selector: 'app-products-home',

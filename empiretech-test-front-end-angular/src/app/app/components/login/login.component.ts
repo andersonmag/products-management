@@ -1,9 +1,9 @@
-import {User} from '../../model/user';
+import {User} from '../../models/user';
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {UserService} from '../../service/user.service';
+import {UserService} from '../../services/user.service';
 import {Router} from '@angular/router';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {TokenAuthenticationService} from '../../service/token-authentication.service';
+import {TokenAuthenticationService} from '../../services/token-authentication.service';
 import {Subject, takeUntil} from 'rxjs';
 
 @Component({
