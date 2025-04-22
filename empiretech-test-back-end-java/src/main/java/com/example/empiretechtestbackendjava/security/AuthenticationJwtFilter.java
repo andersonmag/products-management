@@ -28,11 +28,7 @@ public class AuthenticationJwtFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         try {
-            final var domain = extractDomainFromHost(request.getServerName());
-            final var tenant = tenantClient.getTenant(domain);
-
-            tenantDataSource.addTenant(tenant);
-            TenantContext.setTenant(tenant);
+            setRequestTenant(request);
 
             var token = request.getHeader(jwtService.getHeaderToken());
             if (token != null) {
@@ -48,6 +44,17 @@ public class AuthenticationJwtFilter extends OncePerRequestFilter {
         } finally {
             TenantContext.clear();
         }
+    }
+
+    private void setRequestTenant(HttpServletRequest request) {
+        final var domain = extractDomainFromHost(request.getServerName());
+        var exists = tenantDataSource.existsTenantByDomain(domain);
+        if (!exists) {
+            var tenant = tenantClient.getTenant(domain);
+            tenantDataSource.addTenant(tenant);
+        }
+
+        TenantContext.setTenant(domain);
     }
 
     private String extractDomainFromHost(String host) {

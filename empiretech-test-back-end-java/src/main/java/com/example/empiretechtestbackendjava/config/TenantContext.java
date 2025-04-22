@@ -1,18 +1,16 @@
 package com.example.empiretechtestbackendjava.config;
 
-import com.example.empiretechtestbackendjava.domain.dtos.TenantResponse;
-
 public class TenantContext {
-    private static final ThreadLocal<TenantResponse> CURRENT_TENANT = new ThreadLocal<>();
+    private static final ThreadLocal<String> CURRENT_TENANT = new ThreadLocal<>();
 
     private TenantContext() {
     }
 
-    public static void setTenant(TenantResponse tenant) {
-        CURRENT_TENANT.set(tenant);
+    public static void setTenant(String tenantDomain) {
+        CURRENT_TENANT.set(tenantDomain);
     }
 
-    public static TenantResponse getTenant() {
+    public static String getTenant() {
         return CURRENT_TENANT.get();
     }
 

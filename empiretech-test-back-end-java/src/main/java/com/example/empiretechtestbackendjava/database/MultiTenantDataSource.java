@@ -23,8 +23,7 @@ public class MultiTenantDataSource extends AbstractRoutingDataSource {
 
     @Override
     protected Object determineCurrentLookupKey() {
-        final TenantResponse tenant = TenantContext.getTenant();
-        return tenant != null ? tenant.domain() : null;
+        return TenantContext.getTenant();
     }
 
     public void addTenant(TenantResponse tenant) {
@@ -37,6 +36,10 @@ public class MultiTenantDataSource extends AbstractRoutingDataSource {
         }
     }
 
+    public boolean existsTenantByDomain(String domain) {
+        return dataSources.containsKey(domain);
+    }
+
     private DataSource createDataSource(String dbUrl, String username, String password) {
         HikariDataSource dataSource = new HikariDataSource();
         dataSource.setJdbcUrl(dbUrl);
@@ -47,7 +50,7 @@ public class MultiTenantDataSource extends AbstractRoutingDataSource {
     }
 
     private DataSource createDefaultDatabase() {
-        return createDataSource("jdbc:postgresql://localhost:5432/" + "tenant1", "postgres", "root");
+        return createDataSource("jdbc:postgresql://localhost:5432/" + "default_db", "postgres", "root");
     }
 
     public void initSchemaForTenant(final DataSource dataSource) {

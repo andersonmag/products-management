@@ -16,7 +16,8 @@ import java.util.List;
 @Getter
 public class Product implements Serializable {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(nullable = false)
@@ -34,5 +35,4 @@ public class Product implements Serializable {
         this.description = description;
         this.price = price;
     }
-
 }
