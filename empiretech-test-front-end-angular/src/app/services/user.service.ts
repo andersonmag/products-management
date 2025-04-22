@@ -4,7 +4,7 @@ import {TokenAuthenticationService} from './token-authentication.service';
 import {Injectable} from '@angular/core';
 import {Router} from '@angular/router';
 import {Observable} from 'rxjs';
-import {environment} from "../../../environments/environment";
+import {environment} from "../../environments/environment";
 
 @Injectable({
     providedIn: 'root'
