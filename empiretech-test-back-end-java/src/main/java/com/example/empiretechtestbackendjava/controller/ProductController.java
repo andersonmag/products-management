@@ -42,7 +42,7 @@ public class ProductController {
     @DeleteMapping("/{id}")
     public ResponseEntity removeProduct(@PathVariable("id") Long idProduto) {
         productService.removeProductById(idProduto);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.noContent().build();
     }
 
     @PutMapping("/{id}")
