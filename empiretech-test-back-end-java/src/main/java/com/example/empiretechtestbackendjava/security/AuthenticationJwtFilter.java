@@ -48,6 +48,10 @@ public class AuthenticationJwtFilter extends OncePerRequestFilter {
 
     private void setRequestTenant(HttpServletRequest request) {
         final var domain = extractDomainFromHost(request.getServerName());
+        if (domain.isEmpty()) {
+            return;
+        }
+
         var exists = tenantDataSource.existsTenantByDomain(domain);
         if (!exists) {
             var tenant = tenantClient.getTenant(domain);

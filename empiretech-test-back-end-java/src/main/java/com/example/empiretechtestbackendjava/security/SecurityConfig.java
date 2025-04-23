@@ -34,7 +34,14 @@ public class SecurityConfig {
             .csrf(AbstractHttpConfigurer::disable)
             .cors(Customizer.withDefaults())
             .authorizeHttpRequests(autorize ->
-                    autorize.requestMatchers(HttpMethod.POST, "/login").permitAll()
+                    autorize.requestMatchers(
+                                HttpMethod.POST, "/login"
+                            ).permitAll()
+                            .requestMatchers(
+                                "/swagger-ui/**",
+                                "/v3/api-docs/**",
+                                "/swagger-resources/**"
+                            ).permitAll()
                             .anyRequest().authenticated())
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class);
