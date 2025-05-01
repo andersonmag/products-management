@@ -50,7 +50,7 @@ public class MultiTenantDataSource extends AbstractRoutingDataSource {
     }
 
     private DataSource createDefaultDatabase() {
-        return createDataSource("jdbc:postgresql://localhost:5432/" + "default_db", "postgres", "root");
+        return createDataSource("jdbc:postgresql://tenants-db:5432/" + "default_db", "postgres", "root");
     }
 
     public void initSchemaForTenant(final DataSource dataSource) {

@@ -11,7 +11,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -79,7 +78,7 @@ public class ProductController {
             @ApiResponse(responseCode = "403", description = "Access denied"),
     })
     @DeleteMapping("/{id}")
-    public ResponseEntity<HttpStatus> removeProduct(
+    public ResponseEntity<Void> removeProduct(
             @Parameter(description = "ID of the product to delete", required = true)
             @PathVariable("id") Long idProduto
     ) {
