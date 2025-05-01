@@ -1,0 +1,68 @@
+version: '3.8'
+
+services:
+  tenants:
+    image: tenants-manage-java:latest
+    build:
+      context: ./
+      dockerfile: tenants-manage-java/Dockerfile
+    hostname: tenants
+    ports:
+      - "8081:8081"
+    environment:
+      DB_TENANTS_URL:
+      DB_TENANTS_USERNAME:
+      DB_TENANTS_PASSWORD:
+    depends_on:
+      - tenants-db
+
+  products-management:
+    image: products-management:latest
+    build:
+      context: ./
+      dockerfile: empiretech-test-back-end-java/Dockerfile
+    environment:
+      JWT_SECRET_KEY: 3aa15421-55d3-48f2-8372-ddca66362e98
+      JWT_PREFIX_KEY: Bearer
+      S3_BUCKET_NAME:
+      S3_ACESS_KEY:
+      S3_SECRET_KEY:
+      S3_REGION_STATIC:
+      TENANT_SERVICE_URL: http://tenants:8081/tenants
+    ports:
+      - "8080:8080"
+    depends_on:
+      - tenants-db
+      - redis
+
+  angular-front:
+    build:
+      context: ./
+      dockerfile: empiretech-test-front-end-angular/Dockerfile
+    ports:
+      - "4200:4200"
+    depends_on:
+      - tenants
+      - products-management
+
+  redis:
+    image: redis:latest
+    container_name: redis
+    ports:
+      - "6379:6379"
+
+  tenants-db:
+    image: postgres:latest
+    hostname: tenants-db
+    ports:
+      - "5433:5432"
+    environment:
+      POSTGRES_PASSWORD: root
+      POSTGRES_USER: postgres
+      POSTGRES_DB: tenants_db
+    volumes:
+      - tenants-data:/var/lib/postgresql/data
+      - ./tenants-manage-java/src/main/resources/docker/:/docker-entrypoint-initdb.d/
+
+volumes:
+  tenants-data:

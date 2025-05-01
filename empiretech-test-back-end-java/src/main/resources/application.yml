@@ -13,17 +13,21 @@ spring:
     open-in-view: false
   cache:
     type: redis
+  data:
+    redis:
+      host: redis
+      port: 6379
 jwt:
-  secret-key: 3aa15421-55d3-48f2-8372-ddca66362e98
-  token-prefix: Bearer
+  secret-key: ${JWT_SECRET_KEY}
+  token-prefix: ${JWT_PREFIX_KEY}
   token-header: Authorization
   expiration-time: 3600000
 aws:
   s3:
-    bucket-name:
-    acess-key:
-    secret-key:
-    region-static:
+    bucket-name: ${S3_BUCKET_NAME}
+    acess-key: ${S3_ACESS_KEY}
+    secret-key: ${S3_SECRET_KEY}
+    region-static: ${S3_REGION_STATIC}
 tenant:
   service:
-    url: ${TENANT_SERVICE_URL}:http://localhost:8081/tenants
+    url: ${TENANT_SERVICE_URL}
