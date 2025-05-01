@@ -7,6 +7,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.util.List;
+
 @CrossOrigin(origins = "http://localhost:8080")
 @RestController
 @AllArgsConstructor
@@ -17,14 +19,18 @@ public class TenantController {
 
     @PostMapping
     public ResponseEntity<HttpMethod> createTenant(@RequestBody @Valid TenantRequest request) {
-        var created = service.create(request);
         var location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
-                .buildAndExpand(created.getDomain()).toUri();
+                .buildAndExpand(service.create(request).getDomain()).toUri();
         return ResponseEntity.created(location).build();
     }
 
     @GetMapping("/{domain}")
     public ResponseEntity<Tenant> getTenant(@PathVariable String domain) {
         return ResponseEntity.ok(service.getByDomain(domain));
+    }
+
+    @GetMapping
+    public ResponseEntity<List<Tenant>> getTenants() {
+        return ResponseEntity.ok(service.getAll());
     }
 }
