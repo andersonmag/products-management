@@ -18,7 +18,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.util.List;
 
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @AllArgsConstructor
 @RequestMapping("/products")
@@ -72,7 +72,7 @@ public class ProductController {
         return ResponseEntity.ok(ProductResponse.fromModel(productService.getProductById(idProduto)));
     }
 
-    @Operation(summary = " product by ID", description = "Deletes a single product by its ID")
+    @Operation(summary = "Remove product by ID", description = "Deletes a single product by its ID")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204", description = "Product successfully deleted"),
             @ApiResponse(responseCode = "403", description = "Access denied"),
@@ -97,7 +97,6 @@ public class ProductController {
             @PathVariable("id") Long idProduto,
             @Parameter(description = "New product data", required = true)
             @RequestBody @Valid ProductRequest product) {
-        var productUpdated = productService.updateProduct(idProduto, product);
-        return ResponseEntity.ok(productUpdated);
+        return ResponseEntity.ok(productService.updateProduct(idProduto, product));
     }
 }

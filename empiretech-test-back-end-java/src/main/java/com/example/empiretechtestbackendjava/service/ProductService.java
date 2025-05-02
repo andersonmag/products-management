@@ -2,9 +2,7 @@ package com.example.empiretechtestbackendjava.service;
 
 import com.example.empiretechtestbackendjava.domain.dtos.ProductRequest;
 import com.example.empiretechtestbackendjava.domain.dtos.ProductResponse;
-import com.example.empiretechtestbackendjava.domain.entities.ImageProduct;
 import com.example.empiretechtestbackendjava.domain.entities.Product;
-import com.example.empiretechtestbackendjava.repository.ImageProductRepository;
 import com.example.empiretechtestbackendjava.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;
@@ -13,7 +11,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.util.List;
 
 @Service
@@ -21,9 +18,7 @@ import java.util.List;
 public class ProductService {
 
     private final ProductRepository productRepository;
-    private final ImageProductRepository imageRepository;
-    private final S3Service s3Service;
-    private final String PATH_SAVE_IMAGES = "products";
+    private final ImageService imageService;
 
     @Transactional
     @CacheEvict(value = "products", keyGenerator = "customKeyCacheConfig", allEntries = true)
@@ -31,28 +26,10 @@ public class ProductService {
         Product productSaved = productRepository.save(productRequest.toModel());
 
         if (images != null && !images.isEmpty()) {
-            saveImages(images, productSaved);
+            imageService.saveImages(images, productSaved);
         }
 
         return ProductResponse.fromModel(productSaved);
-    }
-
-    private void saveImages(List<MultipartFile> images, Product productSaved) {
-        for (MultipartFile file : images) {
-            var imageName = file.getOriginalFilename();
-            var completePath = PATH_SAVE_IMAGES + "/" + imageName;
-
-            var pathSaved = "";
-            try {
-                pathSaved = s3Service.uploadFile(completePath, file);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-
-            ImageProduct image = new ImageProduct(productSaved, imageName, pathSaved, file.getContentType());
-            imageRepository.save(image);
-            productSaved.getImages().add(image);
-        }
     }
 
     @Transactional(readOnly = true)
