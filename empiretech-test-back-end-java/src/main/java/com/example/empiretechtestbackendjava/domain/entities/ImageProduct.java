@@ -18,7 +18,7 @@ public class ImageProduct implements Serializable {
     @Id @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
     @JsonIgnore
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Product product;
     @Column(nullable = false)
     private String name;

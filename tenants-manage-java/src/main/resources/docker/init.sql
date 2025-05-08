@@ -11,7 +11,8 @@ CREATE TABLE IF NOT EXISTS users
 );
 
 INSERT INTO users (name, username, password)
-VALUES ('Dev User', 'dev_user', '$2a$10$ADj2i1Jh63kHHvRI8Plmhu5yIVsw9RHXgCENbRc/LkXj6fjikCptW');
+SELECT 'Dev User', 'dev_user', '$2a$10$ADj2i1Jh63kHHvRI8Plmhu5yIVsw9RHXgCENbRc/LkXj6fjikCptW'
+WHERE NOT EXISTS (SELECT 1 FROM users WHERE username = 'dev_user');
 
 CREATE DATABASE tenant_prod;
 \c tenant_prod;
@@ -25,4 +26,5 @@ CREATE TABLE IF NOT EXISTS users
 );
 
 INSERT INTO users (name, username, password)
-VALUES ('Prod User', 'prod_user', '$2a$10$ADj2i1Jh63kHHvRI8Plmhu5yIVsw9RHXgCENbRc/LkXj6fjikCptW');
+SELECT 'Prod User', 'prod_user', '$2a$10$ADj2i1Jh63kHHvRI8Plmhu5yIVsw9RHXgCENbRc/LkXj6fjikCptW'
+WHERE NOT EXISTS (SELECT 1 FROM users WHERE username = 'prod_user');

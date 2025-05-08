@@ -32,11 +32,11 @@ public class ProductServiceTest {
     private ProductService productService;
 
     @Mock
-    private S3Service s3Service;
+    private ImageService imageService;
 
     @BeforeEach
     void setUp() {
-        productService = new ProductService(productRepository, imageProductRepository, s3Service);
+        productService = new ProductService(productRepository, imageService);
     }
 
     @Test

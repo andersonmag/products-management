@@ -17,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.util.List;
+import java.util.UUID;
 
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
@@ -98,5 +99,21 @@ public class ProductController {
             @Parameter(description = "New product data", required = true)
             @RequestBody @Valid ProductRequest product) {
         return ResponseEntity.ok(productService.updateProduct(idProduto, product));
+    }
+
+    @Operation(summary = "Remove product image by ID", description = "Removes a product image based on its ID and product ID")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "Image successfully removed"),
+            @ApiResponse(responseCode = "403", description = "Access denied"),
+            @ApiResponse(responseCode = "404", description = "Image not found or does not belong to the specified product"),
+    })
+    @DeleteMapping("/{id}/images/{imageId}")
+    public ResponseEntity<Void> removeImageProduct(
+            @Parameter(description = "ID of the product", required = true)
+            @PathVariable("id") Long productId,
+            @Parameter(description = "ID of the product image to remove", required = true)
+            @PathVariable("imageId") UUID imageId) {
+        productService.removeProductImage(imageId, productId);
+        return ResponseEntity.noContent().build();
     }
 }

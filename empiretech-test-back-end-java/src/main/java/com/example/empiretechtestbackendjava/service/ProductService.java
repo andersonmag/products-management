@@ -2,6 +2,7 @@ package com.example.empiretechtestbackendjava.service;
 
 import com.example.empiretechtestbackendjava.domain.dtos.ProductRequest;
 import com.example.empiretechtestbackendjava.domain.dtos.ProductResponse;
+import com.example.empiretechtestbackendjava.domain.entities.ImageProduct;
 import com.example.empiretechtestbackendjava.domain.entities.Product;
 import com.example.empiretechtestbackendjava.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
@@ -12,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -64,5 +66,11 @@ public class ProductService {
 
         Product updated = productRepository.save(productForUpdate);
         return ProductResponse.fromModel(updated);
+    }
+
+    @CacheEvict(value = "products", keyGenerator = "customKeyCacheConfig", allEntries = true)
+    public void removeProductImage(UUID idProductImage, Long productId) {
+        final ImageProduct productImage = imageService.getProductByIdAndProductId(idProductImage, productId);
+        imageService.removeProductImage(productImage);
     }
 }

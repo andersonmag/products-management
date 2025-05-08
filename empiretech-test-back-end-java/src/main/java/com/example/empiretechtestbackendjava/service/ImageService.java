@@ -7,6 +7,7 @@ import com.example.empiretechtestbackendjava.repository.ImageProductRepository;
 import lombok.AllArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -58,5 +59,16 @@ public class ImageService {
             fileExtension = fileName.substring(fileName.lastIndexOf('.') + 1);
         }
         return fileExtension;
+    }
+
+    @Transactional(readOnly = true)
+    public ImageProduct getProductByIdAndProductId(UUID imageId, Long productId) {
+        return imageRepository.findByIdAndProductId(imageId, productId)
+                .orElseThrow(() -> new RuntimeException("Image not found or does not belong to the specified product"));
+    }
+
+    public void removeProductImage(ImageProduct productImage) {
+        s3Service.removeS3File(productImage.getLink());
+        imageRepository.deleteById(productImage.getId());
     }
 }

@@ -8,6 +8,9 @@ CREATE TABLE IF NOT EXISTS tenants
 );
 
 INSERT INTO tenants (domain, name, password_database, url_database, user_database)
-VALUES ('dev', 'Dev', 'root', 'jdbc:postgresql://tenants-db:5432/tenant_dev', 'postgres');
+SELECT 'dev', 'Dev', 'root', 'jdbc:postgresql://tenants-db:5432/tenant_dev', 'postgres'
+WHERE NOT EXISTS (SELECT 1 FROM tenants WHERE domain = 'dev');
+
 INSERT INTO tenants (domain, name, password_database, url_database, user_database)
-VALUES ('prod', 'Prod', 'root', 'jdbc:postgresql://tenants-db:5432/tenant_prod', 'postgres');
+SELECT 'prod', 'Prod', 'root', 'jdbc:postgresql://tenants-db:5432/tenant_prod', 'postgres'
+WHERE NOT EXISTS (SELECT 1 FROM tenants WHERE domain = 'prod');

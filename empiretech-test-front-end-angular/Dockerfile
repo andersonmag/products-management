@@ -1,12 +1,11 @@
-FROM node:18 AS build
+FROM node:18
 
 WORKDIR /app
-COPY empiretech-test-front-end-angular/package*.json ./
 
+COPY empiretech-test-front-end-angular/package*.json ./
 RUN npm install
 COPY ./empiretech-test-front-end-angular/ ./
-RUN npm run build
 
 EXPOSE 4200
 
-CMD ["npm", "run", "start"]
+CMD ["npm", "run", "start", "--", "--host", "0.0.0.0", "--disable-host-check"]

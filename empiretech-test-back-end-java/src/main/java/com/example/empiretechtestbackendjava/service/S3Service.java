@@ -1,6 +1,7 @@
 package com.example.empiretechtestbackendjava.service;
 
 import com.amazonaws.services.s3.AmazonS3Client;
+import com.amazonaws.services.s3.model.DeleteObjectRequest;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import org.springframework.beans.factory.annotation.Value;
@@ -35,5 +36,9 @@ public class S3Service {
         Files.delete(fileConverted.toPath());
 
         return s3Client.getResourceUrl(bucketName, path);
+    }
+
+    public void removeS3File(String fileUrl) {
+        s3Client.deleteObject(new DeleteObjectRequest(bucketName, fileUrl));
     }
 }
